@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabuk Med Blood | Blood Management Portal</title>
+<style>
+:root{--red:#c6283d;--red-dark:#a51e31;--navy:#152238;--navy-2:#20324d;--bg:#f4f7fb;--surface:#fff;--text:#172338;--muted:#68758a;--line:#e1e7ef;--green:#16845b;--amber:#a96500;--shadow:0 10px 30px rgba(24,42,70,.07)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:250px minmax(0,1fr)}
+.sidebar{background:var(--navy);color:#fff;padding:24px 14px;display:flex;flex-direction:column;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;padding:0 10px 22px;border-bottom:1px solid #ffffff20}
+.brand-mark{width:42px;height:42px;border-radius:13px;background:var(--red);display:grid;place-items:center;font-size:25px;font-weight:800}
+.brand strong{display:block;font-size:16px;letter-spacing:.2px}.brand small{color:#b7c4d8;font-size:11px;display:block;margin-top:4px}
+.nav-label{padding:0 12px;color:#8090a8;text-transform:uppercase;font-size:10px;letter-spacing:1.4px;font-weight:800}
+.nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;border:0;border-radius:10px;background:transparent;color:#bdc8d8;text-align:left;font-weight:600;font-size:13px}
+.nav button:hover,.nav button.active{background:#ffffff14;color:white}.nav button.active{box-shadow:inset 3px 0 var(--red)}.nav .ico{width:22px;text-align:center;font-size:17px}
+.sidebar-note{margin-top:auto;border:1px solid #ffffff20;background:#ffffff09;padding:14px;border-radius:12px;font-size:12px;color:#c6d1df;line-height:1.55}.sidebar-note strong{display:block;color:#fff;margin-bottom:5px}
+.main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:18px}
+.crumb{font-size:12px;color:var(--muted)}.crumb strong{color:var(--text);display:block;font-size:16px;margin-top:5px}
+.user-chip{display:flex;align-items:center;gap:10px;font-size:12px}.avatar{height:38px;width:38px;display:grid;place-items:center;border-radius:50%;background:#fce8eb;color:var(--red);font-weight:800}.user-chip strong{display:block;font-size:12px}.user-chip small{color:var(--muted)}
+.content{max-width:1450px;margin:auto;padding:28px 30px 45px}.page{display:none}.page.active{display:block}.page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:23px}.page-heading h1{font-size:25px;letter-spacing:-.6px;margin:0 0 7px}.page-heading p{color:var(--muted);font-size:13px;margin:0;line-height:1.5}
+.eyebrow{color:var(--red);text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:1.5px;margin-bottom:8px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:600}.stat-icon{height:34px;width:34px;display:grid;place-items:center;background:#fce8eb;border-radius:10px;font-size:17px}.stat-number{font-size:27px;font-weight:800;margin-top:13px;letter-spacing:-.8px}.stat-sub{font-size:11px;color:var(--muted);margin-top:5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}.panel-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}.panel-head h2{font-size:15px;margin:0}.panel-head p{font-size:12px;color:var(--muted);margin:5px 0 0}.panel-body{padding:22px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.field{margin-bottom:17px}.field.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:#39475d;margin-bottom:7px}input,select{width:100%;min-height:43px;border:1px solid #d7dfeb;border-radius:8px;padding:10px 12px;background:#fff;color:var(--text);outline:none;font-size:13px}input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 3px #c6283d18}input::placeholder{color:#9aa5b5}
+.btn{border:0;border-radius:8px;padding:11px 16px;font-size:12px;font-weight:800;transition:.15s}.btn-primary{background:var(--red);color:white}.btn-primary:hover{background:var(--red-dark)}.btn-light{background:#f0f3f8;color:#344258}.btn-light:hover{background:#e4eaf2}.btn-danger{background:#fff0f2;color:var(--red)}.btn-small{padding:7px 10px;font-size:11px}
+.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.helper{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}
+.notice{display:none;padding:12px 14px;border-radius:9px;margin:15px 0 0;font-size:12px;font-weight:600;line-height:1.5}.notice.show{display:block}.notice.success{background:#e5f7ef;color:#116342}.notice.error{background:#fff0f1;color:#a51e31}.notice.info{background:#eaf2ff;color:#2456a6}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:17px 22px;border-bottom:1px solid var(--line)}.toolbar input,.toolbar select{width:auto;min-width:165px;flex:1}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}th{text-align:left;background:#f8fafd;color:#748096;font-size:10px;text-transform:uppercase;letter-spacing:.6px;padding:13px 18px;border-bottom:1px solid var(--line)}td{padding:14px 18px;border-bottom:1px solid #edf0f5}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fbfcfe}.blood{display:inline-grid;place-items:center;min-width:42px;padding:6px 8px;border-radius:7px;background:#fce8eb;color:var(--red);font-weight:800}.status{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:800;background:#e6f7ee;color:#14754f}.status.pending{background:#fff2d9;color:#956000}.status.progress{background:#e8f0ff;color:#315ca8}.status.fulfilled{background:#e7f7ef;color:#14754f}.status.cancelled{background:#f0f1f4;color:#667085}
+.empty{text-align:center;padding:30px;color:var(--muted);font-size:12px}.empty strong{display:block;color:var(--text);margin-bottom:5px}
+.split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:20px}.quick-list{display:grid;gap:12px}.quick-item{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:10px}.quick-item .qicon{height:38px;width:38px;display:grid;place-items:center;border-radius:10px;background:#fce8eb}.quick-item strong{display:block;font-size:12px}.quick-item small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.quick-item .btn{margin-left:auto}
+.login-wrap{max-width:650px;margin:24px auto}.login-brand{text-align:center;margin-bottom:24px}.login-brand .brand-mark{margin:0 auto 12px}.login-brand h1{font-size:23px;margin:0 0 8px}.login-brand p{font-size:12px;color:var(--muted);margin:0}
+.mobile-menu{display:none;border:0;background:#f0f3f8;border-radius:8px;padding:9px}
+.footer-note{font-size:11px;color:var(--muted);text-align:center;margin-top:22px}
+@media(max-width:1050px){.app{grid-template-columns:215px minmax(0,1fr)}.content{padding:22px 20px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}}
+@media(max-width:720px){.app{display:block}.sidebar{display:none;position:fixed;z-index:10;inset:0 auto 0 0;width:260px;box-shadow:10px 0 30px #0002}.sidebar.open{display:flex}.topbar{height:66px;padding:0 15px}.mobile-menu{display:block}.crumb{flex:1}.user-chip .user-text{display:none}.content{padding:20px 13px 35px}.page-heading h1{font-size:22px}.stats{gap:10px}.stat{padding:14px}.stat-number{font-size:24px}.panel-head,.panel-body{padding:17px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{padding:14px}.toolbar input,.toolbar select{min-width:100%}.page-heading{align-items:center}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">+</div><div><strong>Tabuk Med Blood</strong><small>DONOR & EMERGENCY PORTAL</small></div></div>
+    <div class="nav-label">Workspace</div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
+      <button data-page="register"><span class="ico">♡</span> Donor Registration</button>
+      <button data-page="login"><span class="ico">↪</span> Authentication</button>
+      <button data-page="inventory"><span class="ico">▤</span> Blood Inventory</button>
+      <button data-page="request"><span class="ico">＋</span> Emergency Request</button>
+      <button data-page="feed"><span class="ico">◷</span> Live Requests Feed</button>
+    </nav>
+    <div class="sidebar-note"><strong>Emergency support</strong>This prototype uses sample data stored in this browser. It does not contact hospitals or emergency services.</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+      <div class="crumb">Blood Management System<strong id="pageTitle">Dashboard Overview</strong></div>
+      <div class="user-chip"><div class="avatar" id="avatar">SH</div><div class="user-text"><strong id="userName">Guest User</strong><small id="userRole">Not signed in</small></div><button class="btn btn-light btn-small" id="logoutBtn" hidden>Log out</button></div>
+    </header>
+    <div class="content">
+      <section class="page active" id="dashboard">
+        <div class="page-heading"><div><div class="eyebrow">System overview</div><h1>Blood donation dashboard</h1><p>Monitor sample blood stock and manage emergency requests in one place.</p></div><button class="btn btn-primary" data-go="request">＋ Create emergency request</button></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-top">Available units <span class="stat-icon">🩸</span></div><div class="stat-number" id="statUnits">0</div><div class="stat-sub">Across sample facilities</div></div>
+          <div class="stat"><div class="stat-top">Blood groups <span class="stat-icon">✚</span></div><div class="stat-number" id="statGroups">0</div><div class="stat-sub">Groups represented in inventory</div></div>
+          <div class="stat"><div class="stat-top">Active requests <span class="stat-icon">◷</span></div><div class="stat-number" id="statActive">0</div><div class="stat-sub">Requests needing attention</div></div>
+          <div class="stat"><div class="stat-top">Registered donors <span class="stat-icon">♡</span></div><div class="stat-number" id="statDonors">0</div><div class="stat-sub">Saved in this browser</div></div>
+        </div>
+        <div class="split">
+          <div class="panel"><div class="panel-head"><div><h2>Recent emergency requests</h2><p>Latest requests in the local prototype</p></div><button class="btn btn-light btn-small" data-go="feed">View all</button></div><div class="table-wrap"><table><thead><tr><th>Request</th><th>Blood</th><th>Hospital</th><th>Status</th></tr></thead><tbody id="recentBody"></tbody></table></div></div>
+          <div class="panel"><div class="panel-head"><div><h2>Quick actions</h2><p>Common portal tasks</p></div></div><div class="panel-body"><div class="quick-list">
+            <div class="quick-item"><div class="qicon">♡</div><div><strong>Register as a donor</strong><small>Create a donor profile</small></div><button class="btn btn-light btn-small" data-go="register">Open</button></div>
+            <div class="quick-item"><div class="qicon">🩸</div><div><strong>Check blood stock</strong><small>Filter units by group and hospital</small></div><button class="btn btn-light btn-small" data-go="inventory">Search</button></div>
+            <div class="quick-item"><div class="qicon">＋</div><div><strong>Post an urgent request</strong><small>Add a request to the local feed</small></div><button class="btn btn-light btn-small" data-go="request">Create</button></div>
+          </div></div></div>
+        </div>
+        <p class="footer-note">Academic functional prototype · Sample inventory is not real-time hospital data.</p>
+      </section>
+
+      <section class="page" id="register">
+        <div class="page-heading"><div><div class="eyebrow">FR-1 · Donor management</div><h1>Donor registration</h1><p>Register a donor profile. The form checks required fields and prevents duplicate email addresses.</p></div></div>
+        <div class="panel"><div class="panel-head"><div><h2>Create donor profile</h2><p>Fields marked as required must be completed.</p></div></div><div class="panel-body">
+          <form id="registerForm"><div class="form-grid">
+            <div class="field"><label for="regName">Full name *</label><input id="regName" required maxlength="80" placeholder="Enter full name"></div>
+            <div class="field"><label for="regId">Student / National ID *</label><input id="regId" required maxlength="30" placeholder="Enter ID"></div>
+            <div class="field"><label for="regEmail">Email address *</label><input id="regEmail" type="email" required maxlength="120" placeholder="name@example.com"></div>
+            <div class="field"><label for="regPassword">Create password *</label><input id="regPassword" type="password" minlength="6" required autocomplete="new-password" placeholder="At least 6 characters"></div>
+            <div class="field"><label for="regBlood">Blood group *</label><select id="regBlood" required><option value="">Select blood group</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select></div>
+            <div class="field"><label for="regCity">City / location *</label><input id="regCity" required maxlength="80" value="Tabuk" placeholder="City"></div>
+            <div class="field full"><label for="regPhone">Contact number (optional)</label><input id="regPhone" type="tel" maxlength="30" placeholder="Enter phone number"></div>
+          </div><div class="actions"><button class="btn btn-primary" type="submit">Create donor profile</button><button class="btn btn-light" type="reset">Clear form</button></div><div class="notice" id="regNotice" role="status"></div></form>
+          <p class="helper">Prototype note: accounts are stored only in this browser. Do not use a real password or sensitive personal information in this demo.</p>
+        </div></div>
+      </section>
+
+      <section class="page" id="login">
+        <div class="login-wrap"><div class="login-brand"><div class="brand-mark">+</div><h1>Portal authentication</h1><p>Sign in using an account registered in this browser.</p></div>
+          <div class="panel"><div class="panel-head"><div><h2>Sign in</h2><p>FR-2 · Account authentication</p></div></div><div class="panel-body">
+            <form id="loginForm"><div class="field"><label for="loginEmail">Email address *</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="name@example.com"></div><div class="field"><label for="loginPassword">Password *</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Enter your password"></div><div class="actions"><button class="btn btn-primary" type="submit">Sign in to portal</button><button class="btn btn-light" type="button" data-go="register">Create account</button></div><div class="notice" id="loginNotice" role="status"></div></form>
+            <p class="helper">For a fresh demo, register an account first. This is client-side demo authentication, not secure production login.</p>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="page" id="inventory">
+        <div class="page-heading"><div><div class="eyebrow">FR-3 · Inventory search</div><h1>Blood inventory</h1><p>Search sample stock by blood group or facility name.</p></div><button class="btn btn-light" id="resetFilters">Reset filters</button></div>
+        <div class="panel"><div class="toolbar"><select id="searchGroup" aria-label="Filter by blood group"><option value="ALL">All blood groups</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select><input id="searchFacility" type="search" placeholder="Search hospital or location…" aria-label="Search facility"><select id="stockFilter" aria-label="Filter stock status"><option value="ALL">All stock statuses</option><option value="available">Available stock</option><option value="low">Low stock (1–3 units)</option><option value="empty">Out of stock</option></select></div><div class="table-wrap"><table><thead><tr><th>Blood group</th><th>Available units</th><th>Facility location</th><th>Stock status</th></tr></thead><tbody id="inventoryBody"></tbody></table></div><div class="panel-body helper" id="inventoryCount"></div></div>
+      </section>
+
+      <section class="page" id="request">
+        <div class="page-heading"><div><div class="eyebrow">FR-4 · Emergency response</div><h1>Create blood request</h1><p>Add a request to the local feed and track its status.</p></div></div>
+        <div class="panel"><div class="panel-head"><div><h2>Emergency blood request</h2><p>Verify patient and hospital information before submitting.</p></div><span class="status pending">Urgent workflow</span></div><div class="panel-body">
+          <form id="requestForm"><div class="form-grid">
+            <div class="field"><label for="reqPatient">Patient reference ID *</label><input id="reqPatient" required maxlength="40" placeholder="e.g. PAT-46109"></div>
+            <div class="field"><label for="reqBlood">Required blood group *</label><select id="reqBlood" required><option value="">Select blood group</option><option>O-</option><option>O+</option><option>A-</option><option>A+</option><option>B-</option><option>B+</option><option>AB-</option><option>AB+</option></select></div>
+            <div class="field"><label for="reqUnits">Units needed *</label><input id="reqUnits" type="number" min="1" max="100" step="1" required placeholder="Number of units"></div>
+            <div class="field"><label for="reqHospital">Hospital / facility *</label><input id="reqHospital" required maxlength="120" placeholder="Hospital name"></div>
+            <div class="field full"><label for="reqContact">Hospital contact (optional)</label><input id="reqContact" type="tel" maxlength="30" placeholder="Contact number"></div>
+          </div><div class="actions"><button class="btn btn-primary" type="submit">Broadcast request</button><button class="btn btn-light" type="reset">Clear form</button></div><div class="notice" id="reqNotice" role="status"></div></form>
+          <p class="helper">This only creates a local demonstration record. It does not notify donors, verify a patient, reserve blood, or contact a hospital.</p>
+        </div></div>
+      </section>
+
+      <section class="page" id="feed">
+        <div class="page-heading"><div><div class="eyebrow">FR-5 · Request monitoring</div><h1>Emergency requests feed</h1><p>Review requests and update their demonstration status.</p></div><button class="btn btn-primary" data-go="request">＋ New request</button></div>
+        <div class="panel"><div class="toolbar"><input id="feedSearch" type="search" placeholder="Search request, patient or hospital…" aria-label="Search requests"><select id="feedStatus" aria-label="Filter request status"><option value="ALL">All statuses</option><option>Active Broadcast</option><option>In Progress</option><option>Fulfilled</option><option>Cancelled</option></select><select id="feedBlood" aria-label="Filter request blood group"><option value="ALL">All blood groups</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select></div><div class="table-wrap"><table><thead><tr><th>Request ID</th><th>Patient ref</th><th>Blood</th><th>Units</th><th>Hospital</th><th>Status</th><th>Update status</th></tr></thead><tbody id="feedBody"></tbody></table></div><div class="panel-body helper" id="feedCount"></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+<script>
+(() => {
+  'use strict';
+  const STORAGE = {donors:'tmb_donors_v2', requests:'tmb_requests_v2', inventory:'tmb_inventory_v2', session:'tmb_session_v2'};
+  const initialInventory = [
+    {id:'STK-001',group:'O+',units:14,facility:'Tabuk General Hospital'},
+    {id:'STK-002',group:'O-',units:3,facility:'King Salman Military Hospital'},
+    {id:'STK-003',group:'A+',units:8,facility:'Tabuk General Hospital'},
+    {id:'STK-004',group:'B+',units:5,facility:'King Khalid Hospital'},
+    {id:'STK-005',group:'A-',units:2,facility:'King Salman Military Hospital'},
+    {id:'STK-006',group:'AB+',units:0,facility:'King Khalid Hospital'}
+  ];
+  const initialRequests = [
+    {id:'REQ-101',patient:'PAT-8812',blood:'O-',units:2,hospital:'King Salman Military Hospital',status:'Active Broadcast',createdAt:Date.now()-7200000},
+    {id:'REQ-102',patient:'PAT-9041',blood:'A+',units:3,hospital:'Tabuk General Hospital',status:'In Progress',createdAt:Date.now()-3600000}
+  ];
+  const $ = id => document.getElementById(id);
+  const read = (key, fallback) => { try { const raw=localStorage.getItem(key); return raw===null?fallback:JSON.parse(raw); } catch { return fallback; } };
+  const write = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; } };
+  let donors = read(STORAGE.donors, []);
+  let requests = read(STORAGE.requests, initialRequests);
+  let inventory = read(STORAGE.inventory, initialInventory);
+  let session = read(STORAGE.session, null);
+  if (!Array.isArray(donors)) donors=[];
+  if (!Array.isArray(requests)) requests=initialRequests;
+  if (!Array.isArray(inventory)) inventory=initialInventory;
+
+  const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const notice = (id, message, type='success') => { const el=$(id); el.textContent=message; el.className='notice show '+type; };
+  const clearNotice = id => { const el=$(id); if(el){el.textContent='';el.className='notice';} };
+  const statusClass = status => status==='Fulfilled'?'fulfilled':status==='In Progress'?'progress':status==='Cancelled'?'cancelled':'pending';
+  const stockStatus = units => units===0?['Out of stock','cancelled']:units<=3?['Low stock','pending']:['In stock','fulfilled'];
+  const go = page => {
+    if (!$ (page)) return;
+    document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===page));
+    document.querySelectorAll('.nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===page));
+    const titles={dashboard:'Dashboard Overview',register:'Donor Registration',login:'Portal Authentication',inventory:'Blood Inventory',request:'Emergency Request',feed:'Live Requests Feed'};
+    $('pageTitle').textContent=titles[page]||'Dashboard';
+    $('sidebar').classList.remove('open');
+    if(page==='inventory') renderInventory();
+    if(page==='feed') renderFeed();
+    if(page==='dashboard') renderDashboard();
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  document.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>go(btn.dataset.page)));
+  document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>go(btn.dataset.go)));
+  $('mobileMenu').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
+  $('logoutBtn').addEventListener('click',()=>{session=null;localStorage.removeItem(STORAGE.session);updateSession();go('dashboard');});
+  function updateSession(){
+    const signed=!!session;
+    $('userName').textContent=signed?session.name:'Guest User';
+    $('userRole').textContent=signed?'Signed in · Donor account':'Not signed in';
+    $('avatar').textContent=signed?session.name.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase():'GU';
+    $('logoutBtn').hidden=!signed;
+  }
+  $('registerForm').addEventListener('submit',e=>{
+    e.preventDefault(); clearNotice('regNotice');
+    const name=$('regName').value.trim(), id=$('regId').value.trim(), email=$('regEmail').value.trim().toLowerCase(), password=$('regPassword').value, blood=$('regBlood').value, city=$('regCity').value.trim(), phone=$('regPhone').value.trim();
+    if(!name||!id||!email||!blood||!city){notice('regNotice','Please complete all required fields.','error');return;}
+    if(password.length<6){notice('regNotice','Password must contain at least 6 characters.','error');return;}
+    if(donors.some(d=>d.email.toLowerCase()===email)){notice('regNotice','An account with this email already exists. Please sign in instead.','error');return;}
+    if(donors.some(d=>d.studentId.toLowerCase()===id.toLowerCase())){notice('regNotice','This Student / National ID is already registered.','error');return;}
+    donors.push({id:'DON-'+Date.now().toString().slice(-8),name,studentId:id,email,password,blood,city,phone,createdAt:Date.now()});
+    if(!write(STORAGE.donors,donors)){donors.pop();notice('regNotice','Could not save data in this browser. Check storage settings.','error');return;}
+    $('registerForm').reset(); updateSession(); renderDashboard();
+    notice('regNotice','Donor profile created successfully. You can now sign in with your email and password.');
+  });
+  $('loginForm').addEventListener('submit',e=>{
+    e.preventDefault();clearNotice('loginNotice');
+    const email=$('loginEmail').value.trim().toLowerCase(), password=$('loginPassword').value;
+    const donor=donors.find(d=>d.email.toLowerCase()===email&&d.password===password);
+    if(!donor){notice('loginNotice','Email or password is incorrect. Register an account first if this is your first visit.','error');return;}
+    session={id:donor.id,name:donor.name,email:donor.email,blood:donor.blood};
+    write(STORAGE.session,session);updateSession();notice('loginNotice','Signed in successfully. Welcome, '+donor.name+'.');renderDashboard();
+  });
+  function renderInventory(){
+    const group=$('searchGroup').value, text=$('searchFacility').value.trim().toLowerCase(), stock=$('stockFilter').value;
+    const rows=inventory.filter(x=>(group==='ALL'||x.group===group)&&x.facility.toLowerCase().includes(text)&&(stock==='ALL'||(stock==='available'&&x.units>3)||(stock==='low'&&x.units>0&&x.units<=3)||(stock==='empty'&&x.units===0)));
+    $('inventoryBody').innerHTML=rows.length?rows.map(x=>{const [label,cls]=stockStatus(Number(x.units));return `<tr><td><span class="blood">${escapeHTML(x.group)}</span></td><td><strong>${Number(x.units)}</strong> units</td><td>${escapeHTML(x.facility)}</td><td><span class="status ${cls}">${label}</span></td></tr>`;}).join(''):'<tr><td colspan="4"><div class="empty"><strong>No matching stock found</strong>Try changing your filters.</div></td></tr>';
+    $('inventoryCount').textContent=`Showing ${rows.length} of ${inventory.length} inventory records. This is sample data, not a live hospital feed.`;
+  }
+  ['searchGroup','stockFilter'].forEach(id=>$(id).addEventListener('change',renderInventory));
+  $('searchFacility').addEventListener('input',renderInventory);
+  $('resetFilters').addEventListener('click',()=>{$('searchGroup').value='ALL';$('searchFacility').value='';$('stockFilter').value='ALL';renderInventory();});
+  $('requestForm').addEventListener('submit',e=>{
+    e.preventDefault();clearNotice('reqNotice');
+    const patient=$('reqPatient').value.trim(), blood=$('reqBlood').value, units=Number($('reqUnits').value), hospital=$('reqHospital').value.trim(), contact=$('reqContact').value.trim();
+    if(!patient||!blood||!hospital||!Number.isInteger(units)||units<1||units>100){notice('reqNotice','Check the required fields. Units must be a whole number from 1 to 100.','error');return;}
+    let id; do{id='REQ-'+Math.floor(100000+Math.random()*900000);}while(requests.some(r=>r.id===id));
+    requests.unshift({id,patient,blood,units,hospital,contact,status:'Active Broadcast',createdAt:Date.now()});
+    if(!write(STORAGE.requests,requests)){requests.shift();notice('reqNotice','Could not save this request in browser storage.','error');return;}
+    $('requestForm').reset();renderDashboard();renderFeed();notice('reqNotice',`Request ${id} was added to the local feed successfully. No real hospital or donor was notified.`,'success');
+  });
+  function renderFeed(){
+    const q=$('feedSearch').value.trim().toLowerCase(), status=$('feedStatus').value, blood=$('feedBlood').value;
+    const rows=requests.filter(r=>(status==='ALL'||r.status===status)&&(blood==='ALL'||r.blood===blood)&&[r.id,r.patient,r.hospital,r.blood].some(v=>String(v).toLowerCase().includes(q)));
+    $('feedBody').innerHTML=rows.length?rows.map(r=>`<tr><td><strong>${escapeHTML(r.id)}</strong></td><td>${escapeHTML(r.patient)}</td><td><span class="blood">${escapeHTML(r.blood)}</span></td><td>${Number(r.units)}</td><td>${escapeHTML(r.hospital)}</td><td><span class="status ${statusClass(r.status)}">${escapeHTML(r.status)}</span></td><td><select class="status-select" data-request="${escapeHTML(r.id)}" aria-label="Update status for ${escapeHTML(r.id)}"><option ${r.status==='Active Broadcast'?'selected':''}>Active Broadcast</option><option ${r.status==='In Progress'?'selected':''}>In Progress</option><option ${r.status==='Fulfilled'?'selected':''}>Fulfilled</option><option ${r.status==='Cancelled'?'selected':''}>Cancelled</option></select></td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><strong>No requests found</strong>There are no requests matching your filters.</div></td></tr>';
+    $('feedCount').textContent=`Showing ${rows.length} of ${requests.length} requests. Changes are saved in this browser.`;
+    document.querySelectorAll('.status-select').forEach(select=>select.addEventListener('change',()=>{
+      const item=requests.find(r=>r.id===select.dataset.request);if(!item)return;
+      const old=item.status;item.status=select.value;
+      if(!write(STORAGE.requests,requests)){item.status=old;alert('Unable to save status. Browser storage may be unavailable.');}
+      renderFeed();renderDashboard();
+    }));
+  }
+  ['feedSearch','feedStatus','feedBlood'].forEach(id=>$(id).addEventListener(id==='feedSearch'?'input':'change',renderFeed));
+  function renderDashboard(){
+    $('statUnits').textContent=inventory.reduce((sum,x)=>sum+Number(x.units||0),0);
+    $('statGroups').textContent=new Set(inventory.map(x=>x.group)).size;
+    $('statActive').textContent=requests.filter(r=>r.status==='Active Broadcast'||r.status==='In Progress').length;
+    $('statDonors').textContent=donors.length;
+    const latest=[...requests].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+    $('recentBody').innerHTML=latest.length?latest.map(r=>`<tr><td><strong>${escapeHTML(r.id)}</strong><br><span style="color:#8792a4;font-size:10px">${escapeHTML(r.patient)}</span></td><td><span class="blood">${escapeHTML(r.blood)}</span></td><td>${escapeHTML(r.hospital)}</td><td><span class="status ${statusClass(r.status)}">${escapeHTML(r.status)}</span></td></tr>`).join(''):'<tr><td colspan="4"><div class="empty">No requests yet.</div></td></tr>';
+  }
+  updateSession();renderInventory();renderFeed();renderDashboard();
+})();
+</script>
+</body>
+</html>
